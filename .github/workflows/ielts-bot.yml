@@ -1,8 +1,13 @@
+# .github/workflows/main.yml
+
 name: IELTS Selenium Bot
 
-# This allows the workflow to be triggered manually from the Actions tab in GitHub.
 on:
+  # Allows the workflow to be triggered manually from the Actions tab.
   workflow_dispatch:
+  # Runs the workflow on a schedule: every 4 hours.
+  schedule:
+    - cron: '0 */4 * * *'
 
 permissions:
   contents: read
@@ -21,13 +26,21 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      - name: 3. Set up Chrome browser and driver
+      # ADDED: Cache webdriver-manager downloads to speed up runs
+      - name: 3. Cache webdriver-manager
+        uses: actions/cache@v4
+        with:
+          path: ~/.wdm
+          key: ${{ runner.os }}-wdm-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-wdm-
+
+      - name: 4. Set up Chrome browser and driver
         uses: browser-actions/setup-chrome@v1
 
-      - name: 4. Install Python dependencies
+      - name: 5. Install Python dependencies
         run: pip install -r requirements.txt
 
-      - name: 5. Run the IELTS Finder Script
-        # This step now runs without the SENDER_PASSWORD environment variable.
-        # You must modify main.py to handle the password directly.
-        run: python main.py
+      - name: 6. Run the IELTS Finder Script
+        # MODIFIED: Securely passes the secret password as a command-line argument.
+        run: python main.py --password ${{ secrets.SENDER_PASSWORD }}
