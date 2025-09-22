@@ -119,9 +119,11 @@ class IeltsTestfinder:
             return False
 
 def main():
+   profile_dir = tempfile.mkdtemp(prefix="chrome-profile-")
    options = Options()
-   options.add_argument("--window-size=1920,1080")
-   options.add_experimental_option("detach", True)
+   options.add_argument(f"--user-data-dir={profile_dir}")
+   options.add_argument("--no-first-run")
+   options.add_argument("--no-default-browser-check")
    driver = webdriver.Chrome(options=options)
    driver.maximize_window()
    city = "Mashhad"
