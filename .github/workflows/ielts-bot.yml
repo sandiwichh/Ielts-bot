@@ -29,6 +29,5 @@ jobs:
 
       - name: Run bot
         env:
-          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
         run: python main.py
