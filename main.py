@@ -152,12 +152,12 @@ def main():
 
        city = "Mashhad"
        day = 30
-       month_num = 9
+       month = 9
        year = 2025
        receiver_emails = ["shahrestaniali3@gmail.com"]
        screenshot_filename = "ielts_test_sessions.png"
 
-       finder = IeltsTestfinder(driver, city, day, month_name, year, receiver_emails, screenshot_filename)
+       finder = IeltsTestfinder(driver, city, day, month, year, receiver_emails, screenshot_filename)
 
        if finder.find_test():
           if finder.take_screenshot():
