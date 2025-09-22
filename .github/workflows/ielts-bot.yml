@@ -1,7 +1,8 @@
 name: IELTS Selenium Bot
 
+# This allows the workflow to be triggered manually from the Actions tab in GitHub.
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -9,25 +10,24 @@ permissions:
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Set up Python
+    steps:
+      - name: 1. Check out repository code
+        uses: actions/checkout@v4
+
+      - name: 2. Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: pip
+          cache: 'pip'
 
-      - name: Install Chrome (and ChromeDriver)
+      - name: 3. Set up Chrome browser and driver
         uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: stable
-          install-chromedriver: true
 
-      - name: Install dependencies
+      - name: 4. Install Python dependencies
         run: pip install -r requirements.txt
 
-      - name: Run bot
-        env:
-          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+      - name: 5. Run the IELTS Finder Script
+        # This step now runs without the SENDER_PASSWORD environment variable.
+        # You must modify main.py to handle the password directly.
         run: python main.py
