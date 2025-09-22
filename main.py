@@ -36,8 +36,7 @@ class IeltsTestfinder:
      "city_dropdown_button": (By.XPATH, "//*[@id='cityDropDown']"),
      "city_button": (By.XPATH, f"//div[@aria-labelledby='cityDropDown']//button[normalize-space()='{self.city}']"),
      "select_date_button": (By.XPATH, "//div[contains(@class, 'primary-button-container')]//button[normalize-space()='Select test date']"),
-     # MODIFIED: XPath is now more reliable using the month name
-     "date_button": (By.XPATH,f"//div[@role='gridcell' and not(contains(@class, 'disabled')) and @aria-label='{self.day} {self.month} {self.year}']"),
+     "date_button": (By.XPATH,f"//div[@role='gridcell' and not(contains(@class, 'disabled')) and @aria-label='{day}-{month}-{year}']"),
      "find_session_button": (By.XPATH,"/html/body/app-root/main/app-new-manage-booking/div/div[1]/app-new-test-date/div/div/div[2]/div[3]/button")
     }
 
