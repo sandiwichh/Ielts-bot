@@ -26,8 +26,7 @@ class IeltsTestfinder:
         month,
         month_text,
         year,
-        receiver_emails,
-        screenshot_filename,
+        receiver_emails
     ):
         self.driver = driver
         self.wait = WebDriverWait(self.driver, 30)
@@ -36,7 +35,8 @@ class IeltsTestfinder:
         self.month = month
         self.month_text = month_text
         self.year = year
-        self.screenshot_filename = screenshot_filename
+        self.day_range = []
+        self.screenshot_filename = ""
         self.receiver_emails = receiver_emails
         self.buttons = {
             "accept_cookies": (By.ID, "onetrust-accept-btn-handler"),
@@ -64,14 +64,6 @@ class IeltsTestfinder:
                 "/html/body/app-root/main/app-new-manage-booking/div/div[1]/app-new-test-type/div/div/div/div[2]/button",
             ),
             "desire_day_button": (
-                By.XPATH,
-                f"//div[@role='gridcell' and not(contains(@class, 'disabled')) and @aria-label='{day}-{month}-{year}']",
-            ),
-            "first_day_button": (
-                By.XPATH,
-                f"//div[@role='gridcell' and not(contains(@class, 'disabled')) and @aria-label='{day}-{month}-{year}']",
-            ),
-            "last_day_button": (
                 By.XPATH,
                 f"//div[@role='gridcell' and not(contains(@class, 'disabled')) and @aria-label='{day}-{month}-{year}']",
             ),
@@ -134,7 +126,6 @@ class IeltsTestfinder:
 
         try:
 
-            day_range = []
             for i in range(31):
                 print(i + 1)
                 day = i + 1
@@ -144,40 +135,23 @@ class IeltsTestfinder:
                 )
                 find_element = self.driver.find_elements(*all_days_locator)
                 if find_element:
-                    day_range.append(i + 1)
+                    self.day_range.append(i + 1)
                     print("Availble dau Found")
                 else:
                     print("No available days were found in the current month view.")
-            print(day_range)
-            if self.day in day_range:
+            print(self.day_range)
+            if self.day in self.day_range:
                 print("Desire date available!")
-                self.click_element("desire_day_button")
+                self.check_loader()
+                if not self.click_element("desire_day_button"): return False
+                if not self.click_element("find_session_button"): return False
+                self.screenshot_filename = "ielts_test_sessions.png"
+                self.take_screenshot()
                 return True
-            elif len(day_range) != 0:
+            elif len(self.day_range) != 0:
                 print("Desire date not available!")
-                print("Returning other days in the desire month.")
-                if len(day_range) > 1:
-                    print("More than one day is available")
-                    self.buttons["first_day_button"] = (
-                        By.XPATH,
-                        f"//div[@role='gridcell' and not(contains(@class, 'disabled')) and @aria-label='{day_range[0]}-{self.month}-{self.year}']",
-                    )
-                    self.buttons["last_day_button"] = (
-                        By.XPATH,
-                        f"//div[@role='gridcell' and not(contains(@class, 'disabled')) and @aria-label='{day_range[-1]}-{self.month}-{self.year}']",
-                    )
-                    self.click_element("first_day_button")
-                    self.click_element("last_day_button")
-                    return True
+                return True
 
-                elif len(day_range) == 1:
-
-                    self.buttons["first_day_button"] = (
-                        By.XPATH,
-                        f"//div[@role='gridcell' and not(contains(@class, 'disabled')) and @aria-label='{day_range[0]}-{self.month}-{self.year}']",
-                    )
-                    self.click_element("first_day_button")
-                    return True
             else:
                  return False
 
@@ -210,17 +184,14 @@ class IeltsTestfinder:
         # Sequence for date selection
         if not self.click_element("select_date_button"):
             return False
-            
+
         for _ in range(3):
             if self.search_month():
               if not self.search_date() :
                 print(f"No available days in the {self.month_text}")
                 return False
               else:
-                if self.click_element("find_session_button"):
-                    return True
-                else: 
-                    return False
+                return True          
             else:
                print("Retrying...")
                pass 
@@ -253,17 +224,21 @@ class IeltsTestfinder:
             msg["To"] = email
             msg.attach(
                 MIMEText(
-                    "An IELTS test session is available. See the attached screenshot for details."
+                    f"An IELTS test session is available.\n"
                 )
             )
 
             try:
-                with open(self.screenshot_filename, "rb") as f:
-                    img_data = f.read()
-                image = MIMEImage(
-                    img_data, name=os.path.basename(self.screenshot_filename)
-                )
-                msg.attach(image)
+                if self.screenshot_filename != "":
+                    with open(self.screenshot_filename, "rb") as f:
+                        img_data = f.read()
+                    image = MIMEImage(
+                        img_data, name=os.path.basename(self.screenshot_filename)
+                    )
+                    msg.attach(image)
+                else:
+                    for day in self.day_range:
+                        msg.attach(MIMEText(f"{day} {self.month_text} is available.\n"))
             except FileNotFoundError:
                 print(f"Error: Screenshot file '{self.screenshot_filename}' not found.")
                 return False
@@ -303,8 +278,8 @@ def main():
         print("WebDriver session created successfully in headless mode.")
 
         city = "Tehran"
-        day = 28
-        month = 9
+        day = 7
+        month = 10
         month_text = "October"
         year = 2025
         receiver_emails = ["shahrestaniali3@gmail.com"]
