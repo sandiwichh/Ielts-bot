@@ -144,7 +144,7 @@ class IeltsTestfinder:
                 print("Desire date available!")
                 self.check_loader()
                 #if not self.click_element("desire_day_button"): return False
-                desire_button = (By.XPATH, f"//div[@role='gridcell' and not(contains(@class, 'disabled')) and @aria-label='{self.day}-{self.month}-{self.year}']")
+                desire_button = (By.XPATH, "/html/body/app-root/main/app-new-manage-booking/div/div[1]/app-new-test-date/div/div/div/div[2]/ngb-datepicker/div[2]/div[2]/ngb-datepicker-month/div[3]/div[5]")
                 button = self.wait.until(
                    EC.element_to_be_clickable(desire_button)
                   )
