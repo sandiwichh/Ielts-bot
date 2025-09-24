@@ -143,7 +143,9 @@ class IeltsTestfinder:
             if self.day in self.day_range:
                 print("Desire date available!")
                 self.check_loader()
-                if not self.click_element("desire_day_button"): return False
+                #if not self.click_element("desire_day_button"): return False
+                desire_button = (By.XPATH, f"//div[@role='gridcell' and not(contains(@class, 'disabled')) and @aria-label='{self.day}-{self.month}-{self.year}']")
+                desire_button.click()
                 if not self.click_element("find_session_button"): return False
                 self.screenshot_filename = "ielts_test_sessions.png"
                 self.take_screenshot()
