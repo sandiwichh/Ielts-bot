@@ -152,10 +152,11 @@ class IeltsTestfinder:
             if self.day in day_range:
                 print("Desire date available!")
                 self.click_element("desire_day_button")
-            else:
+            elif len(day_range) != 0:
                 print("Desire date not available!")
+                print("Returning other days in the desire month.")
                 if len(day_range) > 1:
-
+                    print("More than one day is available")
                     self.buttons["first_day_button"] = (
                         By.XPATH,
                         f"//div[@role='gridcell' and not(contains(@class, 'disabled')) and @aria-label='{day_range[0]}-{self.month}-{self.year}']",
@@ -176,12 +177,11 @@ class IeltsTestfinder:
                     )
                     self.click_element("first_day_button")
                     return True
-                else:
-                    return False
+            else:
+                 return False
 
         except Exception as e:
             print(f"An error occurred while trying to find an available day: {e}")
-            self.driver.save_screenshot("error_finding_available_day.png")
             return False
 
     def find_test(self):
@@ -219,8 +219,20 @@ class IeltsTestfinder:
             else:
                 print("Retrying...")
                 pass
+        for _ in range(3):
+            if self.search_month():
+              if not self.search_date() :
+                print(f"No available days in the {self.month_text}")
+                return False
+              else:
+                if self.click_element("find_session_button"):
+                    return True
+                else: 
+                    return False
+            else:
+               print("Retrying...")
+               pass 
 
-        return True
 
     def take_screenshot(self):
         try:
@@ -319,7 +331,6 @@ def main():
 
         if finder.find_test():
             if finder.take_screenshot():
-                # MODIFIED: Pass the password from the argument into the method
                 if finder.send_email(args.password):
                     print("Email workflow completed successfully.")
                 else:
@@ -332,8 +343,6 @@ def main():
 
     except Exception as e:
         print(f"An error occurred during the Selenium workflow: {e}")
-        if driver:
-            driver.save_screenshot("final_error_state.png")
     finally:
         if driver:
             driver.quit()
