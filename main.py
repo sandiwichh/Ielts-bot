@@ -292,8 +292,7 @@ def main():
             month,
             month_text,
             year,
-            receiver_emails,
-            screenshot_filename,
+            receiver_emails
         )
 
         if finder.find_test():
