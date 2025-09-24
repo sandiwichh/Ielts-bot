@@ -278,7 +278,7 @@ def main():
         print("WebDriver session created successfully in headless mode.")
 
         city = "Tehran"
-        day = 7
+        day = 9
         month = 10
         month_text = "October"
         year = 2025
