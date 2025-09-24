@@ -145,7 +145,10 @@ class IeltsTestfinder:
                 self.check_loader()
                 #if not self.click_element("desire_day_button"): return False
                 desire_button = (By.XPATH, f"//div[@role='gridcell' and not(contains(@class, 'disabled')) and @aria-label='{self.day}-{self.month}-{self.year}']")
-                desire_button.click()
+                button = self.wait.until(
+                   EC.element_to_be_clickable(desire_button)
+                  )
+                button.click() 
                 if not self.click_element("find_session_button"): return False
                 self.screenshot_filename = "ielts_test_sessions.png"
                 self.take_screenshot()
