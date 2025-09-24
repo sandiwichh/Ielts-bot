@@ -152,6 +152,7 @@ class IeltsTestfinder:
             if self.day in day_range:
                 print("Desire date available!")
                 self.click_element("desire_day_button")
+                return True
             elif len(day_range) != 0:
                 print("Desire date not available!")
                 print("Returning other days in the desire month.")
@@ -209,16 +210,7 @@ class IeltsTestfinder:
         # Sequence for date selection
         if not self.click_element("select_date_button"):
             return False
-        for _ in range(3):
-            if self.search_month():
-                self.search_date()
-                if self.click_element("find_session_button"):
-                    break
-                else:
-                    return False
-            else:
-                print("Retrying...")
-                pass
+            
         for _ in range(3):
             if self.search_month():
               if not self.search_date() :
