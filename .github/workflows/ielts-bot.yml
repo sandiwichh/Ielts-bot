@@ -5,9 +5,9 @@ name: IELTS Selenium Bot
 on:
   # Allows the workflow to be triggered manually from the Actions tab.
   workflow_dispatch:
-  # Runs the workflow on a schedule: every 4 hours.
+  # Runs the workflow on a schedule: every 2 hours.
   schedule:
-    - cron: '0 */4 * * *'
+    - cron: '0 */2 * * *'
 
 permissions:
   contents: read

@@ -283,9 +283,9 @@ def main():
         print("WebDriver session created successfully in headless mode.")
 
         city = "Tehran"
-        day = 9
-        month = 11
-        month_text = "November"
+        day = 10
+        month = 10
+        month_text = "October"
         year = 2025
         receiver_emails = ["shahrestaniali3@gmail.com"]
         screenshot_filename = "ielts_test_sessions.png"
