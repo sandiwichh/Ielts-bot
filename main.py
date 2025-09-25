@@ -229,7 +229,7 @@ class IeltsTestfinder:
             msg["To"] = email
             msg.attach(
                 MIMEText(
-                    f"An IELTS test session is available.\n"
+                    f"IELTS test sessions are available.\n"
                 )
             )
 
@@ -282,12 +282,12 @@ def main():
         driver = webdriver.Chrome(service=service, options=options)
         print("WebDriver session created successfully in headless mode.")
 
-        city = "Tehran"
-        day = 10
-        month = 10
-        month_text = "October"
+        city = "Mashhad"
+        day = 20
+        month = 11
+        month_text = "November"
         year = 2025
-        receiver_emails = ["shahrestaniali3@gmail.com"]
+        receiver_emails = ["shahrestaniali3@gmail.com","lolaeiamirr@gmail.com"]
         screenshot_filename = "ielts_test_sessions.png"
 
         finder = IeltsTestfinder(
