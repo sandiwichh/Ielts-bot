@@ -284,8 +284,8 @@ def main():
 
         city = "Tehran"
         day = 9
-        month = 10
-        month_text = "October"
+        month = 11
+        month_text = "November"
         year = 2025
         receiver_emails = ["shahrestaniali3@gmail.com"]
         screenshot_filename = "ielts_test_sessions.png"
