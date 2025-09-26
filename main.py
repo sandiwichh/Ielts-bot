@@ -220,7 +220,7 @@ def main():
     wait = WebDriverWait(driver, 30)
     city = "Mashhad"
     global day
-    day = 14
+    day = 20
     global day_range
     day_range = []
     global month
