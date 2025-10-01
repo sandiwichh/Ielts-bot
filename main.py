@@ -229,7 +229,7 @@ def main():
     month_text = "November"
     global year
     year = 2025
-    receiver_emails = ["shahrestaniali3@gmail.com"]
+    receiver_emails = ["shahrestaniali3@gmail.com","lolaeiamirr@gmail.com"]
     global buttons
     buttons = {
         "accept_cookies": (By.ID, "onetrust-accept-btn-handler"),
